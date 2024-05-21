@@ -1,0 +1,49 @@
+#######################################
+# Syntax Coloring Map SD
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+C3DFBS	KEYWORD1	
+status_t	KEYWORD1	
+comms_protocol_t	KEYWORD1	
+DataPacket	KEYWORD1	
+DataFields	KEYWORD1		
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+isAlive	KEYWORD2
+reset	KEYWORD2
+forces KEYWORD2    
+getData KEYWORD2 
+getTemperature KEYWORD2
+getVersion KEYWORD2
+whoAmI KEYWORD2
+setDataFrequency KEYWORD2
+getDataFrequency KEYWORD2
+setDataFields KEYWORD2
+getDataFields KEYWORD2
+startDataStream KEYWORD2
+stopDataStream KEYWORD2
+readDataStream KEYWORD2
+removeBias KEYWORD2
+changeI2CAddress KEYWORD2      
+setCommunicationProtocol KEYWORD2
+isStreaming KEYWORD2
+setCommsMode KEYWORD2
+printData KEYWORD2
+getDataStreamSize KEYWORD2
+isValidAddress KEYWORD2
+setClockFrequency KEYWORD2
+assertReset KEYWORD2
+deassertReset KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+COMMS_I2C	LITERAL1
+COMMS_SPI	LITERAL1
