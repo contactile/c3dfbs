@@ -8,7 +8,6 @@
 
 ![GitHub Release](https://img.shields.io/github/v/release/contactile/c3dfbs)
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/contactile/c3dfbs)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/contactile/c3dfbs/total)
 ![GitHub License](https://img.shields.io/github/license/contactile/c3dfbs)
 
 </div>
