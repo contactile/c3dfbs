@@ -38,6 +38,7 @@ void C3DFBS::begin()
 {
     pin_mode(_interrupt, INPUT);
     pin_mode(_nReset, OUTPUT);
+    write_pin(_nReset, HIGH);
 
     switch(_mode)
     {
