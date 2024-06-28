@@ -216,7 +216,7 @@ C3DFBS::status_t C3DFBS::read(int address, uint8_t* buffer, uint8_t length, bool
 	return returnError;
 }
 
-C3DFBS::status_t C3DFBS::write(int address, uint8_t *buffer, uint8_t length)
+C3DFBS::status_t C3DFBS::write(int address, uint8_t *buffer, uint8_t length, bool defer_ending)
 {
 	status_t returnError = SUCCESS;
 
@@ -249,7 +249,8 @@ C3DFBS::status_t C3DFBS::write(int address, uint8_t *buffer, uint8_t length)
         write_pin(_chip_select, LOW);
 
         // Send address/command
-		SPI.transfer(address);
+        if(address >= 0)
+		    SPI.transfer(address);
 
         if( (length != 0) && (buffer != nullptr) )
         {
@@ -259,7 +260,11 @@ C3DFBS::status_t C3DFBS::write(int address, uint8_t *buffer, uint8_t length)
 
         _last_spi_transaction = micros();  
         
-        write_pin(_chip_select, HIGH);
+        if(!defer_ending)
+        {
+            write_pin(_chip_select, HIGH);
+        }
+
         SPI.endTransaction();
         
 		break;
@@ -311,9 +316,9 @@ C3DFBS::status_t C3DFBS::writeU32(uint8_t cmd, uint32_t data)
     return write(cmd, t.bytes, sizeof(uint32_t));
 }
 
-C3DFBS::status_t C3DFBS::sendCommand(uint8_t cmd) 
+C3DFBS::status_t C3DFBS::sendCommand(uint8_t cmd, bool defer_ending) 
 {
-	return write(cmd);
+    return write(cmd, nullptr, 1, defer_ending); 
 }
 
 bool C3DFBS::isAlive()

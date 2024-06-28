@@ -132,8 +132,8 @@ class C3DFBS
 
         // Read and write via the current command protocol
         status_t read(int address, uint8_t *data, uint8_t length = 1, bool await_interrupt = false, uint32_t inter_byte_delay = 0);
-        status_t write(int address, uint8_t *data = nullptr, uint8_t length = 1); 
-        status_t sendCommand(uint8_t cmd);
+        status_t write(int address, uint8_t *data = nullptr, uint8_t length = 1, bool defer_ending = false); 
+        status_t sendCommand(uint8_t cmd, bool defer_ending = false);
         
     private:       
         #define U16_SIZE sizeof(uint16_t)
