@@ -48,6 +48,8 @@ public:
     static constexpr int num_data_fields = 7;
     static constexpr int all_fields_data_size_bytes = (5 * sizeof(uint16_t) + 7 * sizeof(float));
     static constexpr int c3dfbs_default_i2c_address = 0x57;
+    static constexpr int c3dfbs_i2c_address_range_min = 0x50;
+    static constexpr int c3dfbs_i2c_address_range_max = 0x72;
     static constexpr int sensor_response_ok = 0xAA;
     static constexpr int sensor_response_error = 0xFE;
     static constexpr int sensor_response_unknown = 0xFF;
@@ -135,6 +137,7 @@ protected:
     status_t sendCommand(uint8_t cmd, bool defer_ending = false);
 
 private:
+    static constexpr int c3dfbs_i2c_reserved_address = 0x55;
     static constexpr int u16_size = sizeof(uint16_t);
     static constexpr int float_size = sizeof(float);
     static constexpr int spi_cmd_to_reply_delay_us = 250;      // Delay between command phase and data phase
@@ -142,6 +145,9 @@ private:
     static constexpr int flash_write_delay_ms = 30;            // Delay between command phase and data phase for FLASH write commands
     static constexpr int exit_active_inter_byte_delay_us = 10; // Delay between bytes in the data phase for the stopDataStream() command
     static constexpr int _numberOfDataFields = 12;
+    static constexpr int c3dfbs_i2c_clock_speed = 400000;  // 400kHz
+    static constexpr int c3dfbs_spi_clock_speed = 3000000; // 3MHz
+    static constexpr int c3dfbs_reset_delay_ms = 50;
     static const int _fieldReadSizes[_numberOfDataFields];
 
     float _forces[3] = {NAN, NAN, NAN};

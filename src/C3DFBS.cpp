@@ -40,11 +40,11 @@ void C3DFBS::begin()
     {
     case COMMS_I2C:
         Wire.begin();
-        Wire.setClock(400000);
+        Wire.setClock(c3dfbs_i2c_clock_speed);
         break;
 
     case COMMS_SPI:
-        _spi_settings = SPISettings(3000000, MSBFIRST, SPI_MODE0);
+        _spi_settings = SPISettings(c3dfbs_spi_clock_speed, MSBFIRST, SPI_MODE0);
         SPI.begin();
         pin_mode(_chip_select, OUTPUT);
         write_pin(_chip_select, HIGH);
@@ -76,14 +76,14 @@ void C3DFBS::set_chip_select(uint8_t pin)
 }
 
 /// @brief Reset the sensor.
-/// @warning This function includes inline delays of 50ms total.
+/// @warning This function includes inline delays of 100ms total.
 /// Any pending address change (made with changeI2CAddress() ) will take effect after a device reset.
 void C3DFBS::reset()
 {
     write_pin(_nReset, LOW);
-    delay(50);
+    delay(c3dfbs_reset_delay_ms);
     write_pin(_nReset, HIGH);
-    delay(50); // Delay min 20ms
+    delay(c3dfbs_reset_delay_ms); // Delay min 20ms
 }
 
 void C3DFBS::assertReset()
@@ -108,7 +108,7 @@ bool C3DFBS::forces(float *vector)
     }
     else
     {
-        float data[7];
+        float data[num_data_fields];
         status_t status = getData(data);
         if (status != SUCCESS)
             return false;
@@ -705,11 +705,10 @@ C3DFBS::status_t C3DFBS::changeI2CAddress(uint8_t new_address)
 /// @return Code indicating command success.
 C3DFBS::status_t C3DFBS::changeI2CAddress(uint8_t new_address, uint8_t current_address)
 {
-    const int bootloader_address = 0x55; // Reserved address.
     uint8_t storedAddress = 0x00;
 
     // Validate address range.
-    if ((new_address < 0x50 || new_address > 0x72) || new_address == bootloader_address)
+    if ((new_address < c3dfbs_i2c_address_range_min || new_address > c3dfbs_i2c_address_range_max) || new_address == c3dfbs_i2c_reserved_address)
         return OUT_OF_BOUNDS;
 
     // Override the current address
@@ -875,7 +874,7 @@ C3DFBS::status_t C3DFBS::setCommunicationProtocol(uint8_t mode)
     digitalWrite(SCK, mode & 0x02);
 
     // Delay to make sure device goes offline
-    delay(50);
+    delay(c3dfbs_reset_delay_ms);
 
     // Release reset to restart the sensor
     write_pin(_nReset, HIGH);
@@ -885,13 +884,13 @@ C3DFBS::status_t C3DFBS::setCommunicationProtocol(uint8_t mode)
        - 25ms until the bootloader exits and the user app has started
        - 5ms for the sensor to read the INT pin
     */
-    delay(50);
+    delay(c3dfbs_reset_delay_ms);
 
     // Set INT pin HIGH to lock-in the comms mode
     write_pin(_interrupt, HIGH);
 
     // Delay at least 30ms to allow time for flash variables to be written
-    delay(50);
+    delay(c3dfbs_reset_delay_ms);
 
     // Restore pin function
     pin_mode(_interrupt, INPUT);
