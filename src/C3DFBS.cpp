@@ -639,33 +639,60 @@ void C3DFBS::printData(DataPacket *data, bool isStream, Print *dest) const
     {
         // Use stream flags to select which data are printed
         dest->print("Fx: ");
-        if (_dataFieldsMask & ForceX)
-            dest->printf("%3.2f, ", data->forceX);
+        if (_dataFieldsMask & ForceX) 
+        {
+            dest->print(data->forceX, 2);
+            dest->print(", ");
+        }
         else
-            dest->printf("--, ");
+        {
+            dest->print("--, ");
+        }
 
         dest->print("Fy: ");
         if (_dataFieldsMask & ForceY)
-            dest->printf("%3.2f, ", data->forceY);
+        {
+            dest->print(data->forceY, 2);
+            dest->print(", ");
+        }
         else
-            dest->printf("--, ");
+        {
+            dest->print("--, ");
+        }
 
         dest->print("Fz: ");
         if (_dataFieldsMask & ForceZ)
-            dest->printf("%3.2f, ", data->forceZ);
+        {
+            dest->print(data->forceZ, 2);
+            dest->print(", ");
+        }
         else
-            dest->printf("--, ");
+        {
+            dest->print("--, ");
+        }
 
         dest->print("Temp: ");
         if (_dataFieldsMask & Temperature)
-            dest->printf("%3.2f", data->temperature);
+        {
+            dest->print(data->temperature, 2);
+            dest->print(", ");
+        }
         else
-            dest->printf("--");
+        {
+            dest->print("--");
+        }
     }
     else
     {
         // Print all data
-        dest->printf("Fx: %3.2f, Fy: %3.2f, Fz: %3.2f, Temp: %3.2f", data->forceX, data->forceY, data->forceZ, data->temperature);
+        dest->print("Fx: ");
+        dest->print(data->forceX, 2);
+        dest->print(", Fy: ");
+        dest->print(data->forceY, 2);
+        dest->print(", Fz: ");
+        dest->print(data->forceZ, 2);
+        dest->print(", Temp: ");
+        dest->print(data->temperature, 2);
     }
 
     if (isnan(data->forceX) || isnan(data->forceY) || isnan(data->forceZ))
